@@ -91,8 +91,7 @@ class CompaniesController extends Controller
 
     public function update(Request $request, $id)
     {
-        dd($request->edit_name);
-        // $request
+
         $companies = Companies::where('id',$id)->first();
         if(!empty($companies))
         {

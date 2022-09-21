@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Middleware\AuthMiddleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -22,6 +23,9 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 // Route::get('/companies', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware(['AuthMiddleware'])->group(function() {
 
-Route::resource('/companies', 'App\Http\Controllers\CompaniesController');
-Route::resource('/employees', 'App\Http\Controllers\EmployeesController');
+    
+    Route::resource('/companies', 'App\Http\Controllers\CompaniesController');
+    Route::resource('/employees', 'App\Http\Controllers\EmployeesController');
+});

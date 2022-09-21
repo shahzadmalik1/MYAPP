@@ -95,7 +95,17 @@ class EmployeesController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $employees = Employees::where('id',$id)->first();
+        if(!empty($employees))
+        {
+            employees::where('id',$id)->update([
+                'first_name'=> $request->first_name,
+                'last_name' => $request->last_name,
+                'email'     => $request->email,                   
+                'company_id' => $request->company_id,                   
+                 'phone'    => $request->phone]
+            );
+        }
     }
 
     /**
@@ -106,6 +116,11 @@ class EmployeesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $res=Employees::where('id',$id)->delete();
+        return response()->json([
+            'message' => "Employees deleted successfully",
+            'data' => [],
+            'code' => 1000,
+        ]);
     }
 }

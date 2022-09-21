@@ -8,20 +8,14 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthMiddleware
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
-     */
+
     public function handle(Request $request, Closure $next)
     {
+    
         if(Auth::check()){
             return $next($request);
             //redirect to any view not require auth
          }
-         
-         return 'no data';
+         return redirect()->route('home');
     }
 }
