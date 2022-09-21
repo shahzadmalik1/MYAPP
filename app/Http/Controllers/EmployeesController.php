@@ -2,18 +2,29 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EmployeesRequest;
+use App\Models\Companies;
+use App\Models\Employees;
+use Exception;
 use Illuminate\Http\Request;
 
 class EmployeesController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this -> validation = new EmployeesRequest();
+    }
+
     public function index()
     {
-        //
+        try{
+            $employees = Employees::paginate(10);
+            $companies = Companies::get(['id','name']);
+            return view('employees.employees', compact(['employees','companies']));
+        }
+        catch(Exception $e){
+            return $e->getMessage();
+        }
     }
 
     /**
@@ -26,15 +37,31 @@ class EmployeesController extends Controller
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $validator =  $this->validation->storeValidator($request);
+
+        if($validator->fails()){
+            return response()->json([
+                'message'   => "Error",
+                'errors'    => $validator->errors()->toArray(),
+                'code'      => 0,
+            ]);
+        }
+      
+        $data = [
+                'first_name'=> $request->first_name,
+                'last_name' => $request->last_name,
+                'email'     => $request->email,                   
+                'company_id' => $request->company_id,                   
+                 'phone'    => $request->phone];
+
+        Employees::create($data);
+        return response()->json([
+            'message'   => "Employees added successfully",
+            'data'      => [],
+            'code'      => 1000,
+        ]);
     }
 
     /**
@@ -48,24 +75,24 @@ class EmployeesController extends Controller
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
-        //
+        $employees = Employees::where('id',$id)->first();
+        if(!empty( $employees )){
+            return response()->json([
+                'message'   => "Employees loaded successfully",
+                'data'      => $employees,
+                'code'      => 1000,
+            ]);
+        }
+        return response()->json([
+            'message'   => "Data not found",
+            'data'      => [],
+            'code'      => 1000,
+        ]);
+
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         //

@@ -38,9 +38,12 @@
 
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ms-auto">
-                        {{-- <li class="nav-item">
-                            <a class="nav-link" href="{{ route('companies') }}">Company</a>
-                        </li> --}}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('companies') }}">Companies</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url('employees') }}">Employees</a>
+                        </li>
                         <!-- Authentication Links -->
                         @guest
                             @if (Route::has('login'))

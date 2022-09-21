@@ -14,6 +14,7 @@ class CompaniesController extends Controller
     {
         $this -> validation = new CompaniesRequest();
     }
+
     public function index()
     {
         try{
@@ -73,9 +74,16 @@ class CompaniesController extends Controller
     public function edit($id)
     {
         $companies = Companies::where('id',$id)->first();
+        if(!empty( $companies )){
+            return response()->json([
+                'message' => "Company loaded successfully",
+                'data' => $companies,
+                'code' => 1000,
+            ]);
+        }
         return response()->json([
-            'message' => "Company loaded successfully",
-            'data' => $companies,
+            'message' => "Data not found",
+            'data' => [],
             'code' => 1000,
         ]);
 

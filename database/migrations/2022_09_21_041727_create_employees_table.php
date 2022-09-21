@@ -21,7 +21,6 @@ return new class extends Migration
             $table->foreign('company_id')->references('id')->on('companies');
             $table->string('email')->nullable();
             $table->string('phone')->nullable();
-            $table->string('website')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
